@@ -23,6 +23,23 @@ module.exports = {
       res.status(500).send('Something went wrong...');
     }
   },
+  async fetchComment(req, res) {
+    try {
+      let post = await Post.findById(req.params.id);
+      if (!post) {
+        return res.status(404).send('Post with the given ID is not found');
+      }
+
+      let comment = await Comment.findById(req.params.commentId);
+      if (!comment) {
+        return res.status(404).send('Comment with the given ID is not found');
+      }
+
+      res.send(comment);
+    } catch (err) {
+      res.status(500).send('Something went wrong...');
+    }
+  },
   async updateComment(req, res) {
     const { error } = validateComment(req.body);
     if (error) {
